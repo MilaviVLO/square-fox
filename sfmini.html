@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <link rel="icon" href="icon.png" type="image/png">
+  <link rel="apple-touch-icon" href="icon.png">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SFMini — SquareFox</title>
+  <meta name="description" content="SFMini — экспериментальный сезон SquareFox. Возвращение к истокам." />
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;600;700&family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    :root {
+      --bg: #07000f;
+      --accent-main: #b04dff;
+      --fox: #ff8c36;
+      --fox-dim: rgba(255, 140, 54, 0.14);
+      --fox-border: rgba(255, 140, 54, 0.25);
+      --fox-glow: rgba(255, 140, 54, 0.18);
+      --text: #f0e0cc;
+      --muted: #b8946a;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    * { -webkit-tap-highlight-color: transparent; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      font-family: 'Raleway', sans-serif;
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ─── STARFIELD (identical to index.html) ─── */
+    #starfield { position: fixed; inset: 0; z-index: 0; }
+
+    /* ─── LAYOUT ─── */
+    .page {
+      position: relative;
+      z-index: 1;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 48px 20px 0;
+    }
+
+    /* ─── BACK ─── */
+    .back-link {
+      align-self: flex-start;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.78em;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 7px 14px;
+      border-radius: 20px;
+      border: 1px solid rgba(176, 77, 255, 0.2);
+      transition: all 0.25s ease;
+      margin-bottom: 40px;
+    }
+    .back-link:hover { color: #fff; border-color: rgba(176, 77, 255, 0.5); background: rgba(176, 77, 255, 0.1); }
+
+    /* ─── HERO ─── */
+    .hero {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      width: 100%;
+      max-width: 600px;
+    }
+
+    .logo-wrap {
+      width: clamp(120px, 22vw, 180px);
+      margin-bottom: 20px;
+    }
+    .logo-wrap img {
+      width: 100%;
+      display: block;
+      filter: drop-shadow(0 0 14px rgba(255, 140, 54, 0.22));
+    }
+
+    .title {
+      font-family: 'Press Start 2P', monospace;
+      font-size: clamp(1.6em, 5vw, 2.8em);
+      color: #fff;
+      text-shadow:
+        0 0 28px var(--fox),
+        0 0 70px rgba(255, 140, 54, 0.2),
+        0 4px 0 #3a1500;
+      letter-spacing: 2px;
+    }
+    .title .mini {
+      color: var(--fox);
+      text-shadow: 0 0 16px rgba(255, 140, 54, 0.35), 0 4px 0 #3a1500;
+    }
+
+    .subtitle {
+      margin-top: 8px;
+      font-size: 0.78em;
+      color: var(--muted);
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+    }
+
+    /* ─── BUY ─── */
+    .buy-wrap {
+      margin-top: 28px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .btn-buy {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: linear-gradient(135deg, #b85500 0%, #ff8c36 100%);
+      color: #fff;
+      font-family: 'Raleway', sans-serif;
+      font-weight: 800;
+      font-size: 0.95em;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: 14px 34px;
+      border-radius: 50px;
+      transition: all 0.28s ease;
+      box-shadow: 0 4px 22px rgba(255, 140, 54, 0.3), 0 2px 8px rgba(0,0,0,0.4);
+    }
+    .btn-buy:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(255, 140, 54, 0.5); }
+    .btn-buy:active { transform: none; }
+
+    .buy-note { font-size: 0.72em; color: var(--muted); }
+
+    /* ─── RULE ─── */
+    .rule {
+      width: 100%; max-width: 480px; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255, 140, 54, 0.2), transparent);
+      margin: 32px 0;
+    }
+
+    /* ─── SPECS ─── */
+    .specs {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+      width: 100%;
+      max-width: 600px;
+    }
+
+    .spec {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--fox-border);
+      border-radius: 10px;
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      font-size: 0.8em;
+    }
+    .spec i { color: var(--fox); opacity: 0.7; font-size: 0.9em; }
+    .spec .lbl { color: var(--muted); font-size: 0.8em; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 2px; }
+    .spec .val { color: #fff; font-weight: 700; }
+
+    .spec.ip-spec { cursor: pointer; transition: border-color 0.2s; }
+    .spec.ip-spec:hover { border-color: rgba(255, 140, 54, 0.5); }
+
+    /* ─── ADMIN ─── */
+    .admin-row {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--fox-border);
+      border-radius: 10px;
+      padding: 10px 16px;
+      font-size: 0.8em;
+    }
+    .admin-row i { color: var(--fox); opacity: 0.7; }
+    .admin-nick {
+      color: var(--fox);
+      font-weight: 700;
+      cursor: pointer;
+      border-bottom: 1px dashed rgba(255, 140, 54, 0.35);
+      transition: opacity 0.2s;
+    }
+    .admin-nick:hover { opacity: 0.7; }
+
+    .contacts {
+      display: none;
+      position: absolute;
+      top: calc(100% + 8px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: #100a00;
+      border: 1px solid rgba(255, 140, 54, 0.25);
+      border-radius: 10px;
+      padding: 10px 16px;
+      z-index: 50;
+      min-width: 185px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.6);
+      white-space: nowrap;
+    }
+    .contacts.show { display: block; animation: fadeUp 0.17s ease; }
+
+    @keyframes fadeUp {
+      from { opacity:0; transform: translateX(-50%) translateY(5px); }
+      to   { opacity:1; transform: translateX(-50%) translateY(0); }
+    }
+
+    .c-row { display: flex; align-items: center; gap: 9px; padding: 6px 0; font-size: 0.9em; }
+    .c-row:not(:last-child) { border-bottom: 1px solid rgba(255,255,255,0.06); }
+    .c-row i { width: 16px; text-align: center; }
+    .c-row .fa-discord { color: #5865F2; }
+    .c-row .fa-telegram { color: #2AABEE; }
+    .c-row span { font-weight: 600; color: #fff; }
+
+    /* ─── DESC ─── */
+    .desc {
+      max-width: 590px;
+      width: 100%;
+      background: rgba(255,255,255,0.025);
+      border: 1px solid rgba(255, 140, 54, 0.12);
+      border-radius: 16px;
+      padding: 26px 30px;
+      position: relative;
+      overflow: hidden;
+    }
+    .desc::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255, 140, 54, 0.35), transparent);
+    }
+    .desc-label {
+      font-size: 0.67em;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 14px;
+    }
+    .desc p { font-size: 0.88em; line-height: 1.8; color: #d4b898; }
+    .desc p + p { margin-top: 10px; }
+    .desc em { color: var(--fox); font-style: normal; font-weight: 600; }
+    .desc-sign {
+      margin-top: 16px;
+      font-family: 'Press Start 2P', monospace;
+      font-size: 0.52em;
+      color: var(--muted);
+      text-align: right;
+    }
+
+    /* ─── FOOTER ─── */
+    footer {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 26px 20px;
+      color: rgba(184, 148, 106, 0.35);
+      font-size: 0.72em;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      border-top: 1px solid rgba(255, 140, 54, 0.07);
+      margin-top: 48px;
+      width: 100%;
+    }
+
+    /* ─── REVEAL ─── */
+    .reveal { opacity: 0; transform: translateY(18px); transition: opacity 0.55s ease, transform 0.55s ease; }
+    .reveal.on { opacity: 1; transform: none; }
+
+    @media (max-width: 480px) {
+      .specs { flex-direction: column; align-items: stretch; }
+      .desc { padding: 20px 16px; }
+      .title { font-size: clamp(1.3em, 7vw, 2em); }
+    }
+  </style>
+</head>
+<body>
+<canvas id="starfield"></canvas>
+
+<div class="page">
+  <a href="index.html" class="back-link">← Вернуться на главную</a>
+
+  <div class="hero">
+    <div class="logo-wrap reveal">
+      <img src="logo2.png" alt="SFMini" onerror="this.style.display='none'">
+    </div>
+    <h1 class="title reveal">Square<span class="mini">Fox</span></h1>
+    <p class="subtitle reveal">Mini</p>
+
+    <div class="buy-wrap reveal">
+      <a href="https://squarefox-mini.easydonate.ru/" target="_blank" class="btn-buy"></i>Купить проходку
+      </a>
+      <span class="buy-note">squarefox-mini.easydonate.ru</span>
+    </div>
+  </div>
+
+  <div class="rule reveal"></div>
+
+  <div class="specs reveal">
+    <div class="spec">
+      <i class="fas fa-cube"></i>
+      <div><div class="lbl">Версия</div><div class="val">1.21.1</div></div>
+    </div>
+    <div class="spec">
+      <i class="fas fa-server"></i>
+      <div><div class="lbl">Ядро</div><div class="val">Purpur</div></div>
+    </div>
+    <div class="spec ip-spec" title="Нажать, чтобы скопировать" onclick="copyIP()">
+      <i class="fas fa-network-wired"></i>
+      <div><div class="lbl">IP-адрес</div><div class="val" id="ip-val">squarefoxm.joinserver.xyz</div></div>
+    </div>
+    <div class="admin-row" id="adminRow">
+      <i class="fas fa-crown"></i>
+      <div>
+        <div class="lbl" style="color:var(--muted);font-size:0.8em;text-transform:uppercase;letter-spacing:1px;margin-bottom:2px;">Администратор</div>
+        <span class="admin-nick" id="adminNick" onclick="toggleContacts(event)">Нэрз</span>
+      </div>
+      <div class="contacts" id="contactsPopup">
+        <div class="c-row"><i class="fab fa-discord"></i><span>nerzota916_</span></div>
+        <div class="c-row"><i class="fab fa-telegram"></i><span>@Nerzota916</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="rule reveal"></div>
+
+  <div class="desc reveal">
+    <div class="desc-label">О сезоне</div>
+    <p>Данный сезон является <em>экспериментом</em> для нашего проекта — мы пытаемся вернуться к истокам и переосмыслить суть приватных серверов.</p>
+    <p>SFMini существует параллельно основным сезонам проекта, не имея прямой взаимосвязи с лором и без прописанного сюжета от администрации.</p>
+    <p>У самых <em>креативных, интересных и сплочённых</em> игроков SFMini будет большая вероятность вступить в основной состав команды SquareFox с участием на основных сезонах.</p>
+    <div class="desc-sign">Увидимся на SquareFox Mini!</div>
+  </div>
+</div>
+
+<footer>© 2026 SquareFox · Творческое объединение</footer>
+
+<script>
+  // ─── STARFIELD — identical to index.html ───
+  const canvas = document.getElementById('starfield');
+  const ctx = canvas.getContext('2d');
+  let stars = [], w, h;
+
+  function initStars() {
+    w = canvas.width = window.innerWidth;
+    h = canvas.height = window.innerHeight;
+    stars = Array.from({ length: 240 }, () => ({
+      x: Math.random() * w,
+      y: Math.random() * h,
+      r: Math.random() * 1.3 + 0.28,
+      dx: (Math.random() - 0.5) * 0.3,
+      dy: (Math.random() - 0.5) * 0.3,
+      op: Math.random() * 0.5 + 0.45
+    }));
+  }
+
+  function animateStars() {
+    ctx.clearRect(0, 0, w, h);
+    for (let s of stars) {
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(255,255,255,${s.op})`;
+      ctx.fill();
+      s.x += s.dx; s.y += s.dy;
+      if (s.x < 0 || s.x > w || s.y < 0 || s.y > h) {
+        s.x = Math.random() * w; s.y = Math.random() * h;
+      }
+    }
+    requestAnimationFrame(animateStars);
+  }
+
+  window.addEventListener('resize', initStars);
+  initStars(); animateStars();
+
+  // ─── COPY IP ───
+  function copyIP() {
+    navigator.clipboard.writeText('squarefoxm.joinserver.xyz').then(() => {
+      const el = document.getElementById('ip-val');
+      const orig = el.textContent;
+      el.textContent = 'Скопировано!';
+      el.style.color = 'var(--fox)';
+      setTimeout(() => { el.textContent = orig; el.style.color = ''; }, 1600);
+    });
+  }
+
+  // ─── ADMIN POPUP ───
+  function toggleContacts(e) {
+    e.stopPropagation();
+    document.getElementById('contactsPopup').classList.toggle('show');
+  }
+  document.addEventListener('click', e => {
+    if (!document.getElementById('adminRow').contains(e.target))
+      document.getElementById('contactsPopup').classList.remove('show');
+  });
+
+  // ─── REVEAL ───
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('on'); obs.unobserve(e.target); } });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
