@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    { "source": "/sfmini", "destination": "/sfmini.html" },
+    { "source": "/roulette", "destination": "/roulette.html" },
+    { "source": "/merch", "destination": "/merch.html" },
+    { "source": "/video", "destination": "/video.html" }
+  ]
+}
